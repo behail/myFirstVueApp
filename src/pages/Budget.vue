@@ -1,5 +1,5 @@
 <template>
-  <div class="m-auto shadow-lx2 border rounded p-4">
+  <div class="m-auto shadow-lx2 border rounded p-2 md:p-4">
     <section>
       <div class="text-center border shadow">
         <!-- <h1 class="text-2xl my-2">Budget</h1> -->
@@ -24,25 +24,25 @@
       </div>
     </section>
     <form
-      class="flex justify-between p-2 my-6"
+      class="md:flex justify-center md:justify-between p-2 my-6"
       :class="inputBgColor"
       @submit.prevent="addItem"
     >
       <div>
-        <select class="type border rounded shadow" @change="operation">
+        <select class="type border rounded shadow m-1" @change="operation">
           <option value="+" selected>+</option>
           <option value="-">-</option>
         </select>
         <input
           type="text"
           placeholder="Description"
-          class="focus:border border rounded shadow px-2"
+          class="focus:border border rounded shadow px-2 mx-2"
           v-model="newDescription"
         />
       </div>
       <div>
         <input
-          class="border rounded shadow px-2"
+          class="border rounded shadow px-2 mx-2"
           type="number"
           placeholder="Amount $"
           v-model="newValue"

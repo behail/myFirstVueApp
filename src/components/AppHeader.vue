@@ -1,5 +1,5 @@
 <template>
-  <nav class="w-full bg-gradient-to-r from-blue-800 to-blue-teal-600 px-4 py-4">
+  <nav class="w-full bg-gradient-to-l from-blue-800 to-green-500 px-0 md:px-4 py-4">
     <router-link
       to="/"
       class="px-3"
