@@ -51,6 +51,7 @@
           type="submit"
           class="shadow-2xl rounded px-2 text-gray-50 hover:bg-gray-600 transition duration-100 ease-in-out bg-blue-600 transform hover:-translate-y-0.5 hover:scale-100"
         >
+          {{ count }}
           Add
         </button>
       </div>
@@ -109,10 +110,9 @@
 </template>
 
 <script>
-import { ref } from "vue";
-// import { useStore } from "vuex";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 
-// const store = useStore();
 export default {
   setup() {
     const currentMonthName = new Date().toLocaleString("default", {
@@ -128,17 +128,25 @@ export default {
     const newValue = ref("");
     const newDescription = ref("");
     const sign = ref("+");
-    const plusOrMinus = ref("");
     const totExpense = ref(0);
     const totIncome = ref(0);
-    const totBudget = ref(0);
-    const budgetcolor = ref("text-blue-600");
-    const inputBgColor = ref("bg-green-500");
+    const totBudget = ref(0);    
     const isHovered = ref(false);
     const isHoveredEx = ref(false);
-
-    // const store = useStore();
-    // const plusOrMinus = mounted(() => store.state.plusOrMinus);
+//*******Vuax************ //
+    const store = useStore();
+    const count = computed(() => store.state.count);
+    const increment = () => store.commit("increment");
+    const plusOrMinus = computed(() => store.state.plusOrMinus);
+    const setBudgetPsetiveSign = () => store.commit("setBudgetPsetiveSign");
+    const setBudgetNegativeSign = () => store.commit("setBudgetNegativeSign");
+    const budgetcolor = computed(() => store.state.budgetcolor);
+    const setBudgetcolorGreen = () => store.commit("setBudgetcolorGreen");
+    const setBudgetcolorRed = () => store.commit("setBudgetcolorRed");
+    const setBudgetcolorBlue = () => store.commit("setBudgetcolorBlue");
+    const inputBgColor = computed(() => store.state.inputBgColor);
+    const setInputBgColorGreen = () => store.commit("setInputBgColorGreen");
+    const setInputBgColorPink = () => store.commit("setInputBgColorPink");
 
     function sumIncome() {
       totIncome.value = 0;
@@ -163,32 +171,29 @@ export default {
       return (sign.value = val.target.value), inputColor();
     }
     function budgetSign() {
-      // console.log(this.$store.state.plusOrMinus);
-
       if (totBudget.value > 0) {
-        // this.$sotre.commit("setBudgetPsetiveSign");
-        // console.log(this.$store.state.plusOrMinus);
-        plusOrMinus.value = "+";
-        budgetcolor.value = "text-green-600";
+        setBudgetPsetiveSign();
+        setBudgetcolorGreen();
       } else if (totBudget.value < 0) {
-        budgetcolor.value = "text-red-600";
-        plusOrMinus.value = "";
-        // this.$sotre.commit("setBudgetNegativeSign");
-        // console.log(this.$store.state.plusOrMinus);
+        setBudgetcolorRed();
+        setBudgetNegativeSign();
       } else {
-        budgetcolor.value = "text-blue-600";
-        plusOrMinus.value = "";
+        setBudgetcolorBlue();
+        setBudgetNegativeSign();
       }
     }
     function inputColor() {
       if (sign.value === "+") {
-        inputBgColor.value = "bg-green-500";
+        setInputBgColorGreen();
+        
       } else if (sign.value === "-") {
-        inputBgColor.value = "bg-pink-500";
+        setInputBgColorPink();
+        
       }
     }
 
     function addItem() {
+      increment();
       // localStorage.setItem("description1", newDescription.value);
       // localStorage.setItem("amount1", newValue.value);
       sign.value === "+"
@@ -224,6 +229,8 @@ export default {
     }
 
     return {
+      count,
+      increment,
       addItem,
       currentMonthName,
       currentYear,
