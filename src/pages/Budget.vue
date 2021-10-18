@@ -29,7 +29,7 @@
       @submit.prevent="addItem"
     >
       <div>
-        <select class="type border rounded shadow m-1" @change="operation">
+        <select class="type border rounded shadow m-1" @change="setSign">
           <option value="+" selected>+</option>
           <option value="-">-</option>
         </select>
@@ -66,8 +66,8 @@
               :key="index"
               v-show="list.amount != 0"
               class="my-2"
-              @mouseover="isHovered = true"
-              @mouseleave="isHovered = false"
+              @mouseover="setIsHoveredTrue"
+              @mouseleave="setIsHoveredFalse"
             >
               {{ list.description }} {{ list.amount }}
               <button
@@ -90,8 +90,8 @@
               v-for="(exList, index) in expenseList"
               :key="index"
               class="px-2 my-2"
-              @mouseover="isHoveredEx = true"
-              @mouseleave="isHoveredEx = false"
+              @mouseover="setIsHoveredExTrue"
+              @mouseleave="setIsHoveredExFalse"
             >
               {{ exList.description }} {{ exList.amount }}
               <button
@@ -127,12 +127,11 @@ export default {
     const expenseList = ref([{ description: "", amount: 0 }]);
     const newValue = ref("");
     const newDescription = ref("");
-    const sign = ref("+");
+    // const sign = ref("+");
     const totExpense = ref(0);
     const totIncome = ref(0);
     const totBudget = ref(0);
-    const isHovered = ref(false);
-    const isHoveredEx = ref(false);
+
     //*******Vuex************ //
     const store = useStore();
     const plusOrMinus = computed(() => store.state.plusOrMinus);
@@ -145,6 +144,16 @@ export default {
     const inputBgColor = computed(() => store.state.inputBgColor);
     const setInputBgColorGreen = () => store.commit("setInputBgColorGreen");
     const setInputBgColorPink = () => store.commit("setInputBgColorPink");
+    const isHovered = computed(() => store.state.isHovered);
+    const setIsHoveredTrue = () => store.commit("setIsHoveredTrue");
+    const setIsHoveredFalse = () => store.commit("setIsHoveredFalse");
+    const isHoveredEx = computed(() => store.state.isHoveredEx);
+    const setIsHoveredExTrue = () => store.commit("setIsHoveredExTrue");
+    const setIsHoveredExFalse = () => store.commit("setIsHoveredExFalse");
+    const sign = computed(() => store.state.sign);
+    const setSign = (val) => {
+      return store.commit("setSign", val), inputColor();
+    };
 
     function sumIncome() {
       totIncome.value = 0;
@@ -165,9 +174,7 @@ export default {
     function calculateBudget() {
       return (totBudget.value = totIncome.value - totExpense.value);
     }
-    function operation(val) {
-      return (sign.value = val.target.value), inputColor();
-    }
+
     function budgetSign() {
       if (totBudget.value > 0) {
         setBudgetPsetiveSign();
@@ -227,7 +234,7 @@ export default {
       currentYear,
       incomeList,
       expenseList,
-      operation,
+      setSign,
       newValue,
       newDescription,
       sign,
@@ -240,7 +247,11 @@ export default {
       removeExpense,
       inputBgColor,
       isHovered,
+      setIsHoveredTrue,
+      setIsHoveredFalse,
       isHoveredEx,
+      setIsHoveredExTrue,
+      setIsHoveredExFalse,
     };
   },
 };

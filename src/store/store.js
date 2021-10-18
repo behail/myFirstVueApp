@@ -12,9 +12,25 @@ const store = createStore({
       inputBgColor: "bg-green-500",
       isHovered: false,
       isHoveredEx: false,
+      sign: "+",
     };
   },
   mutations: {
+    setSign(state, payload) {
+      state.sign = payload.target.value;
+    },
+    setIsHoveredExTrue(state) {
+      state.isHoveredEx = true;
+    },
+    setIsHoveredExFalse(state) {
+      state.isHoveredEx = false;
+    },
+    setIsHoveredTrue(state) {
+      state.isHovered = true;
+    },
+    setIsHoveredFalse(state) {
+      state.isHovered = false;
+    },
     setInputBgColorGreen(state) {
       state.inputBgColor = "bg-green-500";
     },
