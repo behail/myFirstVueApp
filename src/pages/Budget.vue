@@ -110,13 +110,19 @@
 
 <script>
 import { ref } from "vue";
+// import { useStore } from "vuex";
 
+// const store = useStore();
 export default {
   setup() {
     const currentMonthName = new Date().toLocaleString("default", {
       month: "long",
     });
     const currentYear = ref(new Date().getFullYear());
+    // localStorage.setItem("incomeList", [{ description: "", amount: 0 }]);
+    // localStorage.setItem("expenseList", [{ description: "", amount: 0 }]);
+    // const incomeList = localStorage.getItem("incomeList");
+    // const expenseList = localStorage.getItem("expenseList");
     const incomeList = ref([{ description: "", amount: 0 }]);
     const expenseList = ref([{ description: "", amount: 0 }]);
     const newValue = ref("");
@@ -130,6 +136,9 @@ export default {
     const inputBgColor = ref("bg-green-500");
     const isHovered = ref(false);
     const isHoveredEx = ref(false);
+
+    // const store = useStore();
+    // const plusOrMinus = mounted(() => store.state.plusOrMinus);
 
     function sumIncome() {
       totIncome.value = 0;
@@ -154,14 +163,18 @@ export default {
       return (sign.value = val.target.value), inputColor();
     }
     function budgetSign() {
-      if (totBudget.value > 0) {
-        plusOrMinus.value = "+";
+      // console.log(this.$store.state.plusOrMinus);
 
-        // this.$store.commit("setBudgetSign");
+      if (totBudget.value > 0) {
+        // this.$sotre.commit("setBudgetPsetiveSign");
+        // console.log(this.$store.state.plusOrMinus);
+        plusOrMinus.value = "+";
         budgetcolor.value = "text-green-600";
       } else if (totBudget.value < 0) {
         budgetcolor.value = "text-red-600";
         plusOrMinus.value = "";
+        // this.$sotre.commit("setBudgetNegativeSign");
+        // console.log(this.$store.state.plusOrMinus);
       } else {
         budgetcolor.value = "text-blue-600";
         plusOrMinus.value = "";
@@ -176,6 +189,8 @@ export default {
     }
 
     function addItem() {
+      // localStorage.setItem("description1", newDescription.value);
+      // localStorage.setItem("amount1", newValue.value);
       sign.value === "+"
         ? incomeList.value.unshift({
             description: newDescription.value,

@@ -3,16 +3,15 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      count: 1,
-      plusOrMinus: "x",
+      plusOrMinus: "",
     };
   },
   mutations: {
-    increment(state) {
-      state.count++;
+    setBudgetPsetiveSign(state) {
+      state.plusOrMinus = "+";
     },
-    setBudgetSign(state) {
-      state.plusOrMinus = "s";
+    setBudgetNegativeSign(state) {
+      state.plusOrMinus = "";
     },
   },
 });

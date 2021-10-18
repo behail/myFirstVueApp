@@ -47,7 +47,7 @@
 import { ref } from "vue";
 export default {
   setup() {
-    const days = ["Sun", "Mon", "Thu", "Wed", "Thr", "Fri", "Sat"];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
 
     let currentMonth = ref(new Date().getMonth());
     const currentYear = ref(new Date().getFullYear());
@@ -70,6 +70,7 @@ export default {
     }
 
     function prev() {
+      console.log(currentMonth);
       if (currentMonth.value === 0) {
         currentMonth.value = 11;
         currentYear.value--;
@@ -77,6 +78,7 @@ export default {
       return currentMonth.value--;
     }
     function next() {
+      console.log(currentMonth);
       if (currentMonth.value === 11) {
         currentMonth.value = 1;
         currentYear.value++;
