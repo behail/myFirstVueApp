@@ -130,13 +130,11 @@ export default {
     const sign = ref("+");
     const totExpense = ref(0);
     const totIncome = ref(0);
-    const totBudget = ref(0);    
+    const totBudget = ref(0);
     const isHovered = ref(false);
     const isHoveredEx = ref(false);
-//*******Vuax************ //
+    //*******Vuex************ //
     const store = useStore();
-    const count = computed(() => store.state.count);
-    const increment = () => store.commit("increment");
     const plusOrMinus = computed(() => store.state.plusOrMinus);
     const setBudgetPsetiveSign = () => store.commit("setBudgetPsetiveSign");
     const setBudgetNegativeSign = () => store.commit("setBudgetNegativeSign");
@@ -185,17 +183,12 @@ export default {
     function inputColor() {
       if (sign.value === "+") {
         setInputBgColorGreen();
-        
       } else if (sign.value === "-") {
         setInputBgColorPink();
-        
       }
     }
 
     function addItem() {
-      increment();
-      // localStorage.setItem("description1", newDescription.value);
-      // localStorage.setItem("amount1", newValue.value);
       sign.value === "+"
         ? incomeList.value.unshift({
             description: newDescription.value,
@@ -229,8 +222,6 @@ export default {
     }
 
     return {
-      count,
-      increment,
       addItem,
       currentMonthName,
       currentYear,
