@@ -203,21 +203,18 @@ export default {
       newValue.value = "";
       document.getElementById("descIn").focus();
     }
-
     function removeIncome(id) {
       setRemoveIncome(id);
       sumIncome();
       calculateBudget();
       budgetSign();
     }
-
     function removeExpense(id) {
       setRemoveExpense(id);
       sumExpense();
       calculateBudget();
       budgetSign();
     }
-
     return {
       addItem,
       currentMonthName,
