@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import actions from "./actions";
 
 const store = createStore({
   state() {
@@ -7,15 +8,51 @@ const store = createStore({
       count: 1,
       incomeList: [{ description: "", amount: 0 }],
       expenseList: [{ description: "", amount: 0 }],
-
       budgetcolor: "text-blue-600",
       inputBgColor: "bg-green-500",
       isHovered: false,
       isHoveredEx: false,
       sign: "+",
+      totExpense: 0,
+      totIncome: 0,
+      totBudget: 0,
     };
   },
+  actions,
   mutations: {
+    setCalculateBudget(state) {
+      return (state.totBudget = state.totIncome - state.totExpense);
+    },
+    setSumExpense(state, payload) {
+      state.totExpense = 0;
+      for (let index = 0; index < payload.length; index++) {
+        state.totExpense += payload[index].amount;
+      }
+    },
+    setSumIncome(state, payload) {
+      state.totIncome = 0;
+      for (let index = 0; index < payload.length; index++) {
+        state.totIncome += payload[index].amount;
+      }
+    },
+    setRemoveIncome(state, payload) {
+      state.incomeList = state.incomeList.filter((list, i) => payload != i);
+    },
+    setRemoveExpense(state, payload) {
+      state.expenseList = state.expenseList.filter((list, i) => payload != i);
+    },
+    setExpenseList(state, payload) {
+      state.expenseList.unshift({
+        description: payload.description,
+        amount: payload.amount,
+      });
+    },
+    setIncomeList(state, payload) {
+      state.incomeList.unshift({
+        description: payload.description,
+        amount: payload.amount,
+      });
+    },
     setSign(state, payload) {
       state.sign = payload.target.value;
     },
@@ -37,7 +74,6 @@ const store = createStore({
     setInputBgColorPink(state) {
       state.inputBgColor = "bg-pink-500";
     },
-
     increment(state) {
       state.count++;
     },
@@ -57,6 +93,7 @@ const store = createStore({
       state.budgetcolor = "text-blue-600";
     },
   },
+  // plugins,
 });
 
 export default store;

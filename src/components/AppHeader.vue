@@ -30,6 +30,7 @@
       @click="changeTextColor('Budget')"
       >Budget</router-link
     >
+    <!-- <router-link to="/form" class="px-3">Form</router-link> -->
   </nav>
 </template>
 <script>

@@ -2,7 +2,6 @@
   <div class="m-auto shadow-lx2 border rounded p-2 md:p-4">
     <section>
       <div class="text-center border shadow">
-        <!-- <h1 class="text-2xl my-2">Budget</h1> -->
         <h2 class="my-2">
           Available Budget in {{ currentMonthName }} ,{{ currentYear }}
         </h2>
@@ -35,9 +34,11 @@
         </select>
         <input
           type="text"
+          autofocus
           placeholder="Description"
           class="focus:border border rounded shadow px-2 mx-2"
           v-model="newDescription"
+          id="descIn"
         />
       </div>
       <div>
@@ -51,7 +52,6 @@
           type="submit"
           class="shadow-2xl rounded px-2 text-gray-50 hover:bg-gray-600 transition duration-100 ease-in-out bg-blue-600 transform hover:-translate-y-0.5 hover:scale-100"
         >
-          {{ count }}
           Add
         </button>
       </div>
@@ -70,6 +70,7 @@
               @mouseleave="setIsHoveredFalse"
             >
               {{ list.description }} {{ list.amount }}
+
               <button
                 class="mx-2 order rounded shadow-2xl px-1 text-gray-50 transition duration-200 ease-in-out bg-blue-600 hover:bg-purple-600 transform hover:-translate-y-1 hover:scale-110"
                 v-show="list.amount && isHovered"
@@ -119,18 +120,8 @@ export default {
       month: "long",
     });
     const currentYear = ref(new Date().getFullYear());
-    // localStorage.setItem("incomeList", [{ description: "", amount: 0 }]);
-    // localStorage.setItem("expenseList", [{ description: "", amount: 0 }]);
-    // const incomeList = localStorage.getItem("incomeList");
-    // const expenseList = localStorage.getItem("expenseList");
-    const incomeList = ref([{ description: "", amount: 0 }]);
-    const expenseList = ref([{ description: "", amount: 0 }]);
     const newValue = ref("");
     const newDescription = ref("");
-    // const sign = ref("+");
-    const totExpense = ref(0);
-    const totIncome = ref(0);
-    const totBudget = ref(0);
 
     //*******Vuex************ //
     const store = useStore();
@@ -154,27 +145,31 @@ export default {
     const setSign = (val) => {
       return store.commit("setSign", val), inputColor();
     };
+    let incomeList = computed(() => store.state.incomeList);
+
+    const setIncomeList = ({ description, amount }) =>
+      store.dispatch({ type: "setIncomeList", description, amount });
+    const expenseList = computed(() => store.state.expenseList);
+    const setExpenseList = ({ description, amount }) =>
+      store.commit({ type: "setExpenseList", description, amount });
+    const setRemoveIncome = (id) => store.commit("setRemoveIncome", id);
+    const setRemoveExpense = (id) => store.commit("setRemoveExpense", id);
+    const totExpense = computed(() => store.state.totExpense);
+    const totIncome = computed(() => store.state.totIncome);
+    const totBudget = computed(() => store.state.totBudget);
+    const setSumIncome = (income) => store.commit("setSumIncome", income);
+    const setSumExpense = (exp) => store.commit("setSumExpense", exp);
+    const setCalculateBudget = () => store.commit("setCalculateBudget");
 
     function sumIncome() {
-      totIncome.value = 0;
-      for (let index = 0; index < incomeList.value.length; index++) {
-        totIncome.value += incomeList.value[index].amount;
-      }
-      return totIncome.value;
+      setSumIncome(incomeList.value);
     }
-
     function sumExpense() {
-      totExpense.value = 0;
-      for (let index = 0; index < expenseList.value.length; index++) {
-        totExpense.value += expenseList.value[index].amount;
-      }
-      return totExpense.value;
+      setSumExpense(expenseList.value);
     }
-
     function calculateBudget() {
-      return (totBudget.value = totIncome.value - totExpense.value);
+      setCalculateBudget();
     }
-
     function budgetSign() {
       if (totBudget.value > 0) {
         setBudgetPsetiveSign();
@@ -194,35 +189,30 @@ export default {
         setInputBgColorPink();
       }
     }
-
     function addItem() {
+      const description = newDescription.value;
+      const amount = newValue.value;
       sign.value === "+"
-        ? incomeList.value.unshift({
-            description: newDescription.value,
-            amount: newValue.value,
-          })
-        : expenseList.value.unshift({
-            description: newDescription.value,
-            amount: newValue.value,
-          });
-
+        ? setIncomeList({ description, amount })
+        : setExpenseList({ description, amount });
       sumIncome();
       sumExpense();
       calculateBudget();
       budgetSign();
       newDescription.value = "";
       newValue.value = "";
+      document.getElementById("descIn").focus();
     }
 
     function removeIncome(id) {
-      incomeList.value = incomeList.value.filter((list, i) => i != id);
+      setRemoveIncome(id);
       sumIncome();
       calculateBudget();
       budgetSign();
     }
 
     function removeExpense(id) {
-      expenseList.value = expenseList.value.filter((list, i) => i != id);
+      setRemoveExpense(id);
       sumExpense();
       calculateBudget();
       budgetSign();
