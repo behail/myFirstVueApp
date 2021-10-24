@@ -5,35 +5,41 @@ const store = createStore({
   state() {
     return {
       plusOrMinus: "",
-      count: 1,
-      incomeList: [{ description: "", amount: 0 }],
-      expenseList: [{ description: "", amount: 0 }],
-      budgetcolor: "text-blue-600",
+      incomeList: JSON.parse(localStorage.getItem("incomeList")) || [
+        { description: "", amount: 0 },
+      ],
+      expenseList: JSON.parse(localStorage.getItem("expenseList")) || [
+        { description: "", amount: 0 },
+      ],
+      budgetcolor: localStorage.getItem("budgetcolor") || "text-blue-600",
       inputBgColor: "bg-green-500",
       isHovered: false,
       isHoveredEx: false,
       sign: "+",
-      totExpense: 0,
-      totIncome: 0,
-      totBudget: 0,
+      totExpense: localStorage.getItem("totExpense") || 0,
+      totIncome: localStorage.getItem("totIncome") || 0,
+      totBudget: localStorage.getItem("totBudget") || 0,
     };
   },
   actions,
   mutations: {
     setCalculateBudget(state) {
-      return (state.totBudget = state.totIncome - state.totExpense);
+      state.totBudget = state.totIncome - state.totExpense;
+      localStorage.setItem("totBudget", state.totBudget);
     },
     setSumExpense(state, payload) {
       state.totExpense = 0;
       for (let index = 0; index < payload.length; index++) {
         state.totExpense += payload[index].amount;
       }
+      localStorage.setItem("totExpense", state.totExpense);
     },
     setSumIncome(state, payload) {
       state.totIncome = 0;
       for (let index = 0; index < payload.length; index++) {
         state.totIncome += payload[index].amount;
       }
+      localStorage.setItem("totIncome", state.totIncome);
     },
     setRemoveIncome(state, payload) {
       state.incomeList = state.incomeList.filter((list, i) => payload != i);
@@ -46,12 +52,14 @@ const store = createStore({
         description: payload.description,
         amount: payload.amount,
       });
+      localStorage.setItem("expenseList", JSON.stringify(state.expenseList));
     },
     setIncomeList(state, payload) {
       state.incomeList.unshift({
         description: payload.description,
         amount: payload.amount,
       });
+      localStorage.setItem("incomeList", JSON.stringify(state.incomeList));
     },
     setSign(state, payload) {
       state.sign = payload.target.value;
@@ -74,9 +82,6 @@ const store = createStore({
     setInputBgColorPink(state) {
       state.inputBgColor = "bg-pink-500";
     },
-    increment(state) {
-      state.count++;
-    },
     setBudgetPsetiveSign(state) {
       state.plusOrMinus = "+";
     },
@@ -85,12 +90,15 @@ const store = createStore({
     },
     setBudgetcolorGreen(state) {
       state.budgetcolor = "text-green-600";
+      localStorage.setItem("budgetcolor", state.budgetcolor);
     },
     setBudgetcolorRed(state) {
       state.budgetcolor = "text-red-600";
+      localStorage.setItem("budgetcolor", state.budgetcolor);
     },
     setBudgetcolorBlue(state) {
       state.budgetcolor = "text-blue-600";
+      localStorage.setItem("budgetcolor", state.budgetcolor);
     },
   },
   // plugins,

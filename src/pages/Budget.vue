@@ -107,6 +107,16 @@
         </div>
       </div>
     </section>
+    <!-- <div class="flex w-full">
+      <ExportExcelSheetVueJs
+        :sheetData="sheetrows"
+        :columns="columns"
+        :filename="filename"
+        :sheetname="sheetname"
+      >
+        Download
+      </ExportExcelSheetVueJs>
+    </div> -->
   </div>
 </template>
 
@@ -116,6 +126,9 @@ import { useStore } from "vuex";
 
 export default {
   setup() {
+    // onBeforeMount(() => {
+    //   console.log(localStorage.getItem("totBudget"));
+    // });
     const currentMonthName = new Date().toLocaleString("default", {
       month: "long",
     });
