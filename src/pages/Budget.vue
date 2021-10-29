@@ -126,9 +126,7 @@ import { useStore } from "vuex";
 
 export default {
   setup() {
-    // onBeforeMount(() => {
-    //   console.log(localStorage.getItem("totBudget"));
-    // });
+    const currentDate = ref(new Date().getDate());
     const currentMonthName = new Date().toLocaleString("default", {
       month: "long",
     });
@@ -173,28 +171,9 @@ export default {
     const setSumIncome = (income) => store.commit("setSumIncome", income);
     const setSumExpense = (exp) => store.commit("setSumExpense", exp);
     const setCalculateBudget = () => store.commit("setCalculateBudget");
+    const setMonthlyLoger = () => store.commit("setMonthlyLoger");
+    const setMonthlyData = (data) => store.commit("setMonthlyData", data);
 
-    function sumIncome() {
-      setSumIncome(incomeList.value);
-    }
-    function sumExpense() {
-      setSumExpense(expenseList.value);
-    }
-    function calculateBudget() {
-      setCalculateBudget();
-    }
-    function budgetSign() {
-      if (totBudget.value > 0) {
-        setBudgetPsetiveSign();
-        setBudgetcolorGreen();
-      } else if (totBudget.value < 0) {
-        setBudgetcolorRed();
-        setBudgetNegativeSign();
-      } else {
-        setBudgetcolorBlue();
-        setBudgetNegativeSign();
-      }
-    }
     function inputColor() {
       if (sign.value === "+") {
         setInputBgColorGreen();
@@ -228,6 +207,36 @@ export default {
       calculateBudget();
       budgetSign();
     }
+    function sumIncome() {
+      setSumIncome(incomeList.value);
+    }
+    function sumExpense() {
+      setSumExpense(expenseList.value);
+    }
+    function calculateBudget() {
+      setCalculateBudget();
+    }
+    function budgetSign() {
+      if (totBudget.value > 0) {
+        setBudgetPsetiveSign();
+        setBudgetcolorGreen();
+      } else if (totBudget.value < 0) {
+        setBudgetcolorRed();
+        setBudgetNegativeSign();
+      } else {
+        setBudgetcolorBlue();
+        setBudgetNegativeSign();
+      }
+    }
+
+    function copyMonthlyData() {
+      const data = [{ totIncome, totExpense, totBudget }];
+      setMonthlyData(data);
+    }
+    if (currentDate.value == 1) {
+      setMonthlyLoger();
+      copyMonthlyData();
+    }
     return {
       addItem,
       currentMonthName,
@@ -257,5 +266,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -19,10 +19,34 @@ const store = createStore({
       totExpense: localStorage.getItem("totExpense") || 0,
       totIncome: localStorage.getItem("totIncome") || 0,
       totBudget: localStorage.getItem("totBudget") || 0,
+      monthlyTotIcome: localStorage.getItem("monthlyTotIcome") || 0,
+      monthlyTotExp: localStorage.getItem("monthlyTotExp") || 0,
+      monthlyTotBudget: localStorage.getItem("monthlyTotBudget") || 0,
+      monthlyData: localStorage.getItem("monthlyData") || [
+        { date: "", monthlyTotIcome: 0, monthlyTotExp: 0, monthlyTotBudget: 0 },
+      ],
     };
   },
   actions,
   mutations: {
+    setMonthlyData(state, payload) {
+      state.monthlyData.push(payload);
+      localStorage.setItem("monthlyData", JSON.stringify(state.monthlyData));
+    },
+    setMonthlyLoger(state) {
+      state.monthlyTotBudget = state.totBudget;
+      state.monthlyTotIcome = state.totIncome;
+      state.monthlyTotExp = state.totExpense;
+      localStorage.setItem("monthlyTotBudget", state.monthlyTotBudget);
+      localStorage.setItem("monthlyTotIcome", state.monthlyTotIcome);
+      localStorage.setItem("monthlyTotExp", state.monthlyTotExp);
+      localStorage.removeItem("totExpense");
+      localStorage.removeItem("totIncome");
+      localStorage.removeItem("totBudget");
+      localStorage.removeItem("incomeList");
+      localStorage.removeItem("expenseList");
+      location.reload();
+    },
     setCalculateBudget(state) {
       state.totBudget = state.totIncome - state.totExpense;
       localStorage.setItem("totBudget", state.totBudget);
@@ -43,9 +67,13 @@ const store = createStore({
     },
     setRemoveIncome(state, payload) {
       state.incomeList = state.incomeList.filter((list, i) => payload != i);
+      localStorage.removeItem("incomeList");
+      localStorage.setItem("incomeList", JSON.stringify(state.incomeList));
     },
     setRemoveExpense(state, payload) {
       state.expenseList = state.expenseList.filter((list, i) => payload != i);
+      localStorage.removeItem("expenseList");
+      localStorage.setItem("expenseList", JSON.stringify(state.expenseList));
     },
     setExpenseList(state, payload) {
       state.expenseList.unshift({

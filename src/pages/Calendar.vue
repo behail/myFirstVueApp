@@ -70,7 +70,7 @@ export default {
     }
 
     function prev() {
-      console.log(currentMonth);
+     
       if (currentMonth.value === 0) {
         currentMonth.value = 11;
         currentYear.value--;
@@ -78,7 +78,7 @@ export default {
       return currentMonth.value--;
     }
     function next() {
-      console.log(currentMonth);
+      
       if (currentMonth.value === 11) {
         currentMonth.value = 1;
         currentYear.value++;

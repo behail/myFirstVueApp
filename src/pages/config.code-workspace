@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"name": "myFirstVueApp",
+		"path": "..\\.."
+	}
+],
+  "settings": {
+    "git.ignoreLimitWarning": true
+  }
+}
