@@ -36,7 +36,13 @@
         </p>
       </section>
       <section class="flex justify-between">
-        <button @click="prev" class="px-2 border shadow rounded">prev</button>
+        <button
+          @click="prev"
+          @mouseover="analyticsLog"
+          class="px-2 border shadow rounded"
+        >
+          prev
+        </button>
         <button @click="next" class="px-2 border shadow rounded">next</button>
       </section>
     </div>
@@ -70,7 +76,6 @@ export default {
     }
 
     function prev() {
-     
       if (currentMonth.value === 0) {
         currentMonth.value = 11;
         currentYear.value--;
@@ -78,7 +83,6 @@ export default {
       return currentMonth.value--;
     }
     function next() {
-      
       if (currentMonth.value === 11) {
         currentMonth.value = 1;
         currentYear.value++;
@@ -95,7 +99,13 @@ export default {
       const currentFullDate = new Date().toDateString();
       return calFullDate === currentFullDate ? "text-pink-600" : "";
     }
-
+    function analyticsLog() {
+      this.$gtag.event("latest-release-clicked", {
+        event_category: "documentation",
+        event_label: "Prev Button was Clicked",
+        value: 1,
+      });
+    }
     return {
       days,
       currentMonth,
@@ -106,6 +116,7 @@ export default {
       prev,
       next,
       calClass,
+      analyticsLog,
     };
   },
 };
