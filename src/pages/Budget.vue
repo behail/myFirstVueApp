@@ -156,10 +156,10 @@ export default {
     const setSign = (val) => {
       return store.commit("setSign", val), inputColor();
     };
-    let incomeList = computed(() => store.state.incomeList);
-
+    console.log(computed(() => store.state.incomeList).value);
+    const incomeList = computed(() => store.state.incomeList);
     const setIncomeList = ({ description, amount }) =>
-      store.dispatch({ type: "setIncomeList", description, amount });
+      store.commit({ type: "setIncomeList", description, amount });
     const expenseList = computed(() => store.state.expenseList);
     const setExpenseList = ({ description, amount }) =>
       store.commit({ type: "setExpenseList", description, amount });
@@ -184,16 +184,18 @@ export default {
     function addItem() {
       const description = newDescription.value;
       const amount = newValue.value;
-      sign.value === "+"
-        ? setIncomeList({ description, amount })
-        : setExpenseList({ description, amount });
-      sumIncome();
-      sumExpense();
-      calculateBudget();
-      budgetSign();
-      newDescription.value = "";
-      newValue.value = "";
-      document.getElementById("descIn").focus();
+      if (description && amount) {
+        sign.value === "+"
+          ? setIncomeList({ description, amount })
+          : setExpenseList({ description, amount });
+        sumIncome();
+        sumExpense();
+        calculateBudget();
+        budgetSign();
+        newDescription.value = "";
+        newValue.value = "";
+        document.getElementById("descIn").focus();
+      }
     }
     function removeIncome(id) {
       setRemoveIncome(id);
@@ -233,7 +235,7 @@ export default {
       const data = [{ totIncome, totExpense, totBudget }];
       setMonthlyData(data);
     }
-    if (currentDate.value == 1) {
+    if (currentDate.value == 30) {
       setMonthlyLoger();
       copyMonthlyData();
     }

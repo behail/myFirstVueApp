@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import actions from "./actions";
+// import actions from "./actions";
 
 const store = createStore({
   state() {
@@ -27,7 +27,7 @@ const store = createStore({
       ],
     };
   },
-  actions,
+  // actions,
   mutations: {
     setMonthlyData(state, payload) {
       state.monthlyData.push(payload);
