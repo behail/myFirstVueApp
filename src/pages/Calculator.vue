@@ -114,6 +114,7 @@
 
 <script>
 import { ref } from "vue";
+import { useGtag } from "vue-gtag-next";
 export default {
   setup() {
     const curValue = ref("");
@@ -140,10 +141,10 @@ export default {
       curValue.value = curValue.value + val;
     }
     function calculate() {
-      if (selectedOperation.value === "*") multiply();
-      else if (selectedOperation.value === "/") devide();
-      else if (selectedOperation.value === "-") subtract();
-      else if (selectedOperation.value === "+") sum();
+      if (selectedOperation.value === "*") multiply(), mulGALog();
+      else if (selectedOperation.value === "/") devide(), divGALog();
+      else if (selectedOperation.value === "-") subtract(), subGALog();
+      else if (selectedOperation.value === "+") sum(), sumGALog();
 
       preValue.value = "";
       selectedOperation.value = "";
@@ -161,6 +162,31 @@ export default {
     function sum() {
       curValue.value = +preValue.value + +curValue.value;
     }
+    const { event } = useGtag();
+    const sumGALog = () => {
+      event("plus btn clicked", {
+        event_category: "btn click",
+        event_label: "user-calculate-sum",
+      });
+    };
+    const subGALog = () => {
+      event("minus btn clicked", {
+        event_category: "btn click",
+        event_label: "user-calculate-substruction",
+      });
+    };
+    const divGALog = () => {
+      event("division btn clicked", {
+        event_category: "btn click",
+        event_label: "user-calculate-division",
+      });
+    };
+    const mulGALog = () => {
+      event("multiply btn clicked", {
+        event_category: "btn click",
+        event_label: "user-calculate-multiplication",
+      });
+    };
     return {
       curValue,
       preValue,
@@ -170,6 +196,10 @@ export default {
       calculate,
       clear,
       selectedOperation,
+      sumGALog,
+      subGALog,
+      divGALog,
+      mulGALog,
     };
   },
 };

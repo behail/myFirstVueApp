@@ -36,9 +36,7 @@
         </p>
       </section>
       <section class="flex justify-between">
-        <button @click="analyticsLog" class="px-2 border shadow rounded">
-          prev
-        </button>
+        <button @click="prev" class="px-2 border shadow rounded">prev</button>
         <button @click="next" class="px-2 border shadow rounded">next</button>
       </section>
     </div>
@@ -48,6 +46,7 @@
 <script>
 import { ref } from "vue";
 import { useGtag } from "vue-gtag-next";
+
 export default {
   setup() {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
@@ -77,14 +76,14 @@ export default {
         currentMonth.value = 11;
         currentYear.value--;
       }
-      return currentMonth.value--;
+      return currentMonth.value--, prevGALog();
     }
     function next() {
       if (currentMonth.value === 11) {
         currentMonth.value = 1;
         currentYear.value++;
       }
-      return currentMonth.value++;
+      return currentMonth.value++, nextGALog();
     }
 
     function calClass(num) {
@@ -98,20 +97,18 @@ export default {
     }
 
     const { event } = useGtag();
-    const analyticsLog = () => {
-      event("aaa", {
-        event_category: "bbb",
-        event_label: "ccc",
+    const prevGALog = () => {
+      event("prev btn clicked", {
+        event_category: "btn click",
+        event_label: "user-clicked-prev-btn",
       });
     };
-
-    // function analyticsLog() {
-    //   this.$gtag.event("latest-release-clicked", {
-    //     event_category: "documentation",
-    //     event_label: "Prev Button was Clicked",
-    //     value: 1,
-    //   });
-    // }
+    const nextGALog = () => {
+      event("next btn clicked", {
+        event_category: "btn click",
+        event_label: "user-clicked-next-btn",
+      });
+    };
     return {
       days,
       currentMonth,
@@ -122,7 +119,8 @@ export default {
       prev,
       next,
       calClass,
-      analyticsLog,
+      prevGALog,
+      nextGALog,
     };
   },
 };

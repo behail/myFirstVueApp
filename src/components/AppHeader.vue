@@ -2,13 +2,13 @@
   <nav
     class="w-full bg-gradient-to-l from-blue-800 to-green-500 px-0 md:px-4 py-4"
   >
-    <router-link
+    <!-- <router-link
       to="/"
       class="px-3"
       :class="[isActiveHome]"
       @click="changeTextColor('Home')"
       >Home</router-link
-    >
+    > -->
     <router-link
       to="/calculator"
       class="px-3"

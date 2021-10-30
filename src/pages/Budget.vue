@@ -123,6 +123,7 @@
 <script>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { useGtag } from "vue-gtag-next";
 
 export default {
   setup() {
@@ -198,6 +199,7 @@ export default {
         newDescription.value = "";
         newValue.value = "";
         document.getElementById("descIn").focus();
+        addItemGALog();
       }
     }
     function removeIncome(id) {
@@ -205,12 +207,14 @@ export default {
       sumIncome();
       calculateBudget();
       budgetSign();
+      incomeDeletedGALog();
     }
     function removeExpense(id) {
       setRemoveExpense(id);
       sumExpense();
       calculateBudget();
       budgetSign();
+      expenDeletedGALog();
     }
     function sumIncome() {
       setSumIncome(incomeList.value);
@@ -248,6 +252,25 @@ export default {
       copyMonthlyData();
     }
 
+    const { event } = useGtag();
+    const addItemGALog = () => {
+      event("add-income-or-expense", {
+        event_category: "data-entry",
+        event_label: "user-add-income-or-expense",
+      });
+    };
+    const incomeDeletedGALog = () => {
+      event("income-deleted", {
+        event_category: "data-remove",
+        event_label: "user-remove-income",
+      });
+    };
+    const expenDeletedGALog = () => {
+      event("expense-deleted", {
+        event_category: "data-remove",
+        event_label: "user-remove-expense",
+      });
+    };
     return {
       addItem,
       currentMonthName,
@@ -272,6 +295,9 @@ export default {
       isHoveredEx,
       setIsHoveredExTrue,
       setIsHoveredExFalse,
+      addItemGALog,
+      incomeDeletedGALog,
+      expenDeletedGALog,
     };
   },
 };
