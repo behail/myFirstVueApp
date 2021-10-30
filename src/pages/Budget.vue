@@ -127,6 +127,7 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const currentDate = ref(new Date().getDate());
+    const currentHour = ref(new Date().getHours);
     const currentMinute = ref(new Date().getMinutes());
     const currentSecond = ref(new Date().getSeconds());
     const currentMonthName = new Date().toLocaleString("default", {
@@ -237,10 +238,16 @@ export default {
       const data = [{ totIncome, totExpense, totBudget }];
       setMonthlyData(data);
     }
-    if (currentDate.value == 30 && currentMinute.value == 0 && currentSecond.value ==0) {
+    if (
+      currentDate.value == 30 &&
+      currentHour.value == 0 &&
+      currentMinute.value == 0 &&
+      currentSecond.value == 0
+    ) {
       setMonthlyLoger();
       copyMonthlyData();
     }
+    console.log(currentDate.value, currentMinute.value, currentSecond.value);
     return {
       addItem,
       currentMonthName,
