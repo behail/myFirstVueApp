@@ -36,11 +36,7 @@
         </p>
       </section>
       <section class="flex justify-between">
-        <button
-          @click="prev"
-          @mouseover="analyticsLog"
-          class="px-2 border shadow rounded"
-        >
+        <button @click="analyticsLog" class="px-2 border shadow rounded">
           prev
         </button>
         <button @click="next" class="px-2 border shadow rounded">next</button>
