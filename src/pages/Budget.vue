@@ -247,7 +247,7 @@ export default {
       setMonthlyLoger();
       copyMonthlyData();
     }
-    console.log(currentDate.value, currentMinute.value, currentSecond.value);
+
     return {
       addItem,
       currentMonthName,

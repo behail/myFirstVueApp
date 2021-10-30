@@ -51,6 +51,7 @@
 
 <script>
 import { ref } from "vue";
+import { useGtag } from "vue-gtag-next";
 export default {
   setup() {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
@@ -99,13 +100,22 @@ export default {
       const currentFullDate = new Date().toDateString();
       return calFullDate === currentFullDate ? "text-pink-600" : "";
     }
-    function analyticsLog() {
-      this.$gtag.event("latest-release-clicked", {
-        event_category: "documentation",
-        event_label: "Prev Button was Clicked",
-        value: 1,
+
+    const { event } = useGtag();
+    const analyticsLog = () => {
+      event("aaa", {
+        event_category: "bbb",
+        event_label: "ccc",
       });
-    }
+    };
+
+    // function analyticsLog() {
+    //   this.$gtag.event("latest-release-clicked", {
+    //     event_category: "documentation",
+    //     event_label: "Prev Button was Clicked",
+    //     value: 1,
+    //   });
+    // }
     return {
       days,
       currentMonth,

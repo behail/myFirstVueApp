@@ -5,12 +5,14 @@ import router from "./router";
 import store from "./store/store";
 import "./registerServiceWorker";
 import ExportExcelSheetVueJs from "export-excel-sheet-vue-js";
-import VueGtag from "vue-gtag";
+import VueGtag from "vue-gtag-next";
 
 const app = createApp(App);
 
 app.use(VueGtag, {
-  config: { id: "UA-201825684-1" },
+  property: {
+    id: "UA-201825684-1",
+  },
 });
 
 app.use(router);
