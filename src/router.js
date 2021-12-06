@@ -10,7 +10,7 @@ const routes = [
   // { path: "/", component: Home },
   // { path: "/calculator", component: Calculator },
   // { path: "/calander", component: Calendar },
-  { path: "/budget", component: Budget },
+  { path: "/", component: Budget },
 ];
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.

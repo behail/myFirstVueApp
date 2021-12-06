@@ -2,7 +2,7 @@
   <div class="m-auto shadow-lx2 border rounded p-2 md:p-4">
     <section>
       <div class="text-center border shadow">
-        <h2 class="my-2">
+        <h2 class="my-2" data-test="budgetTitle">
           Available Budget in {{ currentMonthName }} ,{{ currentYear }}
         </h2>
         <h3 class="my-2 font-bold" :class="budgetcolor">
@@ -107,16 +107,7 @@
         </div>
       </div>
     </section>
-    <!-- <div class="flex w-full">
-      <ExportExcelSheetVueJs
-        :sheetData="sheetrows"
-        :columns="columns"
-        :filename="filename"
-        :sheetname="sheetname"
-      >
-        Download
-      </ExportExcelSheetVueJs>
-    </div> -->
+   
   </div>
 </template>
 
@@ -160,7 +151,7 @@ export default {
     const setSign = (val) => {
       return store.commit("setSign", val), inputColor();
     };
-    console.log(computed(() => store.state.incomeList).value);
+    
     const incomeList = computed(() => store.state.incomeList);
     const setIncomeList = ({ description, amount }) =>
       store.commit({ type: "setIncomeList", description, amount });
