@@ -23,7 +23,7 @@ const store = createStore({
       monthlyTotExp: localStorage.getItem("monthlyTotExp") || 0,
       monthlyTotBudget: localStorage.getItem("monthlyTotBudget") || 0,
       monthlyData: localStorage.getItem("monthlyData") || [
-        { date: "", monthlyTotIcome: 0, monthlyTotExp: 0, monthlyTotBudget: 0 },
+        { logDate: {month: 8, year: 2021}, monthlyTotIcome: 0, monthlyTotExp: 0, monthlyTotBudget: 0 },
       ],
     };
   },
@@ -37,6 +37,8 @@ const store = createStore({
       state.monthlyTotBudget = state.totBudget;
       state.monthlyTotIcome = state.totIncome;
       state.monthlyTotExp = state.totExpense;
+      state.logDate.month = state.currentMonthName;
+      state.logDate.year = state.currentYear
       localStorage.setItem("monthlyTotBudget", state.monthlyTotBudget);
       localStorage.setItem("monthlyTotIcome", state.monthlyTotIcome);
       localStorage.setItem("monthlyTotExp", state.monthlyTotExp);

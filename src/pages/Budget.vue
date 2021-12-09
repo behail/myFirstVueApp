@@ -41,7 +41,7 @@
           id="descIn"
         />
       </div>
-      <div>
+      <div class="py-1">
         <input
           class="border rounded shadow px-2 mx-2"
           type="number"
@@ -78,12 +78,18 @@
               >
                 x
               </button>
+              <button
+                class="mx-2 order rounded shadow-2xl px-1 text-gray-50 transition duration-200 ease-in-out bg-blue-600 hover:bg-purple-600 transform hover:-translate-y-1 hover:scale-110"
+                v-show="list.amount && isHovered"
+              >
+                edit
+              </button>
             </li>
           </ul>
         </div>
       </div>
-      <div class="w-1/2">
-        <h3 class="text-pink-600 font-bold">EXPENSE</h3>
+      <div class="w-1/2 border-l-2 px-2">
+        <h3 class="text-pink-600 font-bold ">EXPENSE</h3>
         <div>
           <ul>
             <li
@@ -102,13 +108,50 @@
               >
                 x
               </button>
+               <button
+                class="mx-2 px-1 border rounded shadow-2xl text-gray-50 transition duration-200 ease-in-out bg-blue-600 hover:bg-purple-600 transform hover:-translate-y-1 hover:scale-110"
+                v-show="exList.amount && isHoveredEx"               
+              >
+                edit
+              </button>
+              
             </li>
           </ul>
         </div>
       </div>
-    </section>
-   
+      
+    </section>   
+    <div>
+     <Menu as="div" class="relative inline-block text-left">
+    <div>
+      <MenuButton class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-1 bg-gray-500 text-sm font-medium text-gray-100 hover:bg-gray-50 hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+        History
+        <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+      </MenuButton>
+    </div>
+
+    <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+      <MenuItems class="origin-top absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+        <div class="py-1">
+          <MenuItem v-slot="{ active }">
+            <ul :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">
+              <li v-for="(monDat, index) in monthlyData" :key="index"> 
+                <div  class="border-b-2 py-3">
+                  <h2><b>{{monDat.logDate.month}}/{{monDat.logDate.year}}</b></h2>
+                  <h3>--> Total Income was = {{monDat.monthlyTotIcome}}</h3>
+                  <h3>--> Total Expense was = {{monDat.monthlyTotExp}}</h3>
+                  <h3>--> Total Budget was = {{monDat.monthlyTotBudget}}</h3>
+                </div>
+              </li>
+          </ul>         
+          </MenuItem>         
+        </div>
+      </MenuItems>
+    </transition>
+  </Menu>
   </div>
+  </div>
+  
 </template>
 
 <script>
@@ -116,7 +159,18 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useGtag } from "vue-gtag-next";
 
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { ChevronDownIcon } from '@heroicons/vue/solid'
+
+
 export default {
+  components: {
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+    ChevronDownIcon,
+  },
   setup() {
     const currentDate = ref(new Date().getDate());
     const currentHour = ref(new Date().getHours);
@@ -168,6 +222,7 @@ export default {
     const setCalculateBudget = () => store.commit("setCalculateBudget");
     const setMonthlyLoger = () => store.commit("setMonthlyLoger");
     const setMonthlyData = (data) => store.commit("setMonthlyData", data);
+    const monthlyData = computed(() => store.state.monthlyData)
 
     function inputColor() {
       if (sign.value === "+") {
@@ -230,17 +285,22 @@ export default {
     }
 
     function copyMonthlyData() {
-      const data = [{ totIncome, totExpense, totBudget }];
+      const data = [{ currentMonthName,currentYear, totIncome, totExpense, totBudget }];
       setMonthlyData(data);
     }
     if (
-      currentDate.value == 30 &&
-      currentHour.value == 0 &&
-      currentMinute.value == 0 &&
-      currentSecond.value == 0
+      // currentDate.value == 30 &&
+      // currentHour.value == 0 &&
+      // currentMinute.value == 0 &&
+      // currentSecond.value == 0
+       currentDate.value == 8 &&
+      currentHour.value == 20 &&
+      currentMinute.value == 7 &&
+      currentSecond.value == 10
     ) {
       setMonthlyLoger();
       copyMonthlyData();
+      console.log('logged');
     }
 
     const { event } = useGtag();
@@ -262,7 +322,9 @@ export default {
         event_label: "user-remove-expense",
       });
     };
+   
     return {
+      monthlyData,
       addItem,
       currentMonthName,
       currentYear,

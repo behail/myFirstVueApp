@@ -4,7 +4,6 @@ import "./index.css";
 import router from "./router";
 import store from "./store/store";
 import "./registerServiceWorker";
-import ExportExcelSheetVueJs from "export-excel-sheet-vue-js";
 import VueGtag from "vue-gtag-next";
 
 const app = createApp(App);
@@ -17,6 +16,5 @@ app.use(VueGtag, {
 
 app.use(router);
 app.use(store);
-app.use(ExportExcelSheetVueJs);
 
 app.mount("#app");
