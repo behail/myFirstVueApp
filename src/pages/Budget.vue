@@ -136,7 +136,7 @@
           <MenuItem v-slot="{ active }">
             <ul :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">
               <li v-for="(monDat, index) in monthlyData" :key="index"> 
-                <div  class="border-b-2 py-3">
+                <div  class="border-b-2 py-3" v-show="monDat.lenght > 0">
                   <h2><b>{{monDat.logDate.month}}/{{monDat.logDate.year}}</b></h2>
                   <h3>--> Total Income was = {{monDat.monthlyTotIcome}}</h3>
                   <h3>--> Total Expense was = {{monDat.monthlyTotExp}}</h3>
